@@ -9,6 +9,8 @@ public class MainController : MonoBehaviour
     public PlayerController playerController;
     [HideInInspector]
     public UIController uiController;
+    [HideInInspector]
+    public BotController botController;
 
     private static MainController Instance;
     public static MainController instance { get { return Instance; } }
@@ -22,12 +24,11 @@ public class MainController : MonoBehaviour
     {
         playerController = FindObjectOfType<PlayerController>();
         uiController = FindObjectOfType<UIController>();
+        botController = FindObjectOfType<BotController>();
     }
 
     public void BackToMenu()
     {
         SceneManager.LoadScene("Menu");
     }
-
-
 }

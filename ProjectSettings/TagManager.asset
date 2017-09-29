@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - Bullet
+  - SpawnCollider
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -15,11 +17,11 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Border
+  - Enemy
+  - Bullet
+  - Player
+  - Floor
   - 
   - 
   - 

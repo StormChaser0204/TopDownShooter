@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     public Player player;
 
-
     private static PlayerController Instance;
     public static PlayerController instance { get { return Instance; } }
 
@@ -14,5 +13,4 @@ public class PlayerController : MonoBehaviour
     {
         Instance = this;
     }
-
 }

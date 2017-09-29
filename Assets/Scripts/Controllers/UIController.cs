@@ -24,8 +24,6 @@ public class UIController : MonoBehaviour
         shoot.onClick.AddListener(StartCD);
     }
 
-
-
     public void Start()
     {
         healthList = new List<GameObject>();

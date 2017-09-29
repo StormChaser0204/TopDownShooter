@@ -15,16 +15,15 @@ public class Player : MonoBehaviour
     public Transform stick;
     public Animator PlayerAnim;
 
-    private Vector3 _stick;
     private float _moveSpeed;
     private bool canTakeDamage = true;
+    private float rotation;
 
     private Rigidbody rb;
     private Transform tr;
+    private Vector3 _stick;
     private Vector3 moveInput;
     private Vector3 moveVelocity;
-
-    private float rotation;
 
     public void Awake()
     {
@@ -36,7 +35,6 @@ public class Player : MonoBehaviour
     {
         _moveSpeed = moveSpeed;
         _stick = new Vector3(stick.position.x, 0, stick.position.y);
-
         rotation = tr.rotation.y;
     }
 
@@ -49,7 +47,6 @@ public class Player : MonoBehaviour
     public void FixedUpdate()
     {
         rb.velocity = moveVelocity;
-
         if (CnInputManager.GetAxis("Horizontal") != 0 || CnInputManager.GetAxis("Vertical") != 0)
             tr.rotation = Quaternion.Euler(0, Mathf.Atan2(CnInputManager.GetAxis("Horizontal"), CnInputManager.GetAxis("Vertical")) * Mathf.Rad2Deg, 0);
     }
@@ -76,7 +73,6 @@ public class Player : MonoBehaviour
             Time.timeScale = 0;
             MainController.instance.uiController.Lose();
         }
-
     }
 
     IEnumerator WaitForRevive()
@@ -88,5 +84,4 @@ public class Player : MonoBehaviour
         canTakeDamage = true;
         moveSpeed = _moveSpeed;
     }
-
 }

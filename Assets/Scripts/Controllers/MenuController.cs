@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MenuController : MonoBehaviour
 {
     public Button game;
-    // Use this for initialization
+
     void Start()
     {
         game.onClick.AddListener(ToGame);
@@ -18,5 +18,4 @@ public class MenuController : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene("Game");
     }
-
 }
