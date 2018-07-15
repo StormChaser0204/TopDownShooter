@@ -1,65 +1,74 @@
-﻿using System.Collections;
+﻿using Engine.Singleton;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIController : MonoBehaviour
-{
-    public GameObject loseWindow;
-    public Text killCounterText;
-    public Button toMenu;
-    public Button shoot;
-    public Transform healthParent;
-    public GameObject healthPrefab;
-
+public class UIController : SceneSingleton<UIController> {
     [SerializeField]
-    private List<GameObject> healthList;
-    private int killCounter = 0;
+    private GameObject _loseWindow;
+    [SerializeField]
+    private Text _killCounterText;
+    [SerializeField]
+    private Button _toMenu;
+    [SerializeField]
+    private Transform _healthParent;
+    [SerializeField]
+    private GameObject _healthPrefab;
+    [SerializeField]
+    private List<GameObject> _healthList;
 
-    public void Awake()
-    {
-        MainController.instance.playerController.player.onTakeDamage += UpdateHP;
-        toMenu.onClick.AddListener(() => MainController.instance.BackToMenu());
-        shoot.onClick.AddListener(() => MainController.instance.playerController.player.Shoot());
-        shoot.onClick.AddListener(StartCD);
-    }
 
-    public void Start()
-    {
-        healthList = new List<GameObject>();
-        for (int i = 0; i < PlayerController.instance.player.lifeCounter; i++)
-        {
-            healthList.Add(Instantiate(healthPrefab, healthParent));
+    private PlayerComponent _player;
+    private int _killCounter;
+    private int _healthCounter;
+
+    public int KillCounter {
+        get {
+            return _killCounter;
+        }
+        set {
+            _killCounter++;
+            UpdateKillCounter();
         }
     }
 
-    public void StartCD()
-    {
-        shoot.interactable = false;
-        StartCoroutine(CD());
+    protected override void Init() {
+        _toMenu.onClick.AddListener(BackToMenu);
+        _killCounter = 0;
+        _player = FindObjectOfType<PlayerComponent>();
+        _healthCounter = (int)_player.Health;
+        UpdateHP();
     }
 
-    public void UpdateHP()
-    {
-        Destroy(healthList[healthList.Count - 1].gameObject);
-        healthList.Remove(healthList[healthList.Count - 1]);
+    public void UpdateHP() {
+        _healthCounter = (int)_player.Health;
+        var currentHealthCount = _healthList.Count;
+
+        if (_healthCounter > currentHealthCount) {
+            for (int i = 0; i < _healthCounter - currentHealthCount; i++) {
+                var healthObject = Instantiate(_healthPrefab, _healthParent);
+                _healthList.Add(healthObject);
+            }
+        }
+        else {
+            for (int i = 0; i < currentHealthCount - _healthCounter; i++) {
+                Destroy(_healthList[i]);
+                _healthList.Remove(_healthList[i]);
+            }
+        }
     }
 
-    public void IncriminateKill()
-    {
-        killCounter++;
-        killCounterText.text = string.Format("KILLS:{0}", killCounter);
+    private void UpdateKillCounter() {
+        _killCounterText.text = string.Format("KILLS:{0}", _killCounter);
     }
 
-    public void Lose()
-    {
-        loseWindow.SetActive(true);
+    public void Lose() {
+        Time.timeScale = 0;
+        _loseWindow.SetActive(true);
     }
 
-    IEnumerator CD()
-    {
-        yield return new WaitForSeconds(0.5f);
-        shoot.interactable = true;
+    private void BackToMenu() {
+        SceneManager.LoadScene("Menu");
     }
-
 }
