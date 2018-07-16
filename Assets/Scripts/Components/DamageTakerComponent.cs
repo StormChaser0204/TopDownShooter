@@ -24,7 +24,6 @@ public class DamageTakerComponent : BaseComponent {
 
     public void TakeDamage(float damage) {
         if (!CanTakeDamage) return;
-
         _unitComponent.Health -= damage;
         if (_unitComponent.Health <= 0) {
             _unitComponent.Death();

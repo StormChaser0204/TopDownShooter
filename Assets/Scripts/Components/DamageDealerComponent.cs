@@ -23,10 +23,9 @@ public class DamageDealerComponent : BaseComponent {
         var unitComponent = col.gameObject.GetComponent<UnitComponent>();
         if (unitComponent == null) return;
         if (!_targetTypes.Contains(unitComponent.UnitType)) return;
-        DamageManager.Instance.DealDamage(this, unitComponent.DamageTaker);
+        DealDamage(unitComponent);
     }
 
-    //TODO: Перенести сюда OnCollisionEnter и в нем делать проверку, добавить DamageManager и его вызов
     protected override void Init() {
     }
 }

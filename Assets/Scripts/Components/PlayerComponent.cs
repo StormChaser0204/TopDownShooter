@@ -33,6 +33,7 @@ public class PlayerComponent : UnitComponent {
 
     private IEnumerator WaitForRevive() {
         DamageTaker.CanTakeDamage = false;
+        Animator.SetTrigger("TakeDamage");
         yield return new WaitForSeconds(2);
         DamageTaker.CanTakeDamage = true;
         StopCoroutine(_takeDamage);
