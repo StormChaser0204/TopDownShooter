@@ -5,35 +5,24 @@ using UnityEngine;
 
 public class DamageTakerComponent : BaseComponent {
 
-    private bool _canTakeDamage;
-    public bool CanTakeDamage {
-        get {
-            return _canTakeDamage;
-        }
-        set {
-            _canTakeDamage = value;
-        }
+    [SerializeField]
+    private List<UnitComponent.Type> _ignoredTypes;
+    private HealthComponent _healthComponent;
+
+    public void TakeDamage(DamageDealerComponent damageDealer) {
+        _healthComponent.ChangeHealth(damageDealer.Damage);
     }
 
-    private UnitComponent _unitComponent;
-    public UnitComponent UnitComponent {
-        get {
-            return _unitComponent;
-        }
-    }
-
-    public void TakeDamage(float damage) {
-        if (!CanTakeDamage) return;
-        _unitComponent.Health -= damage;
-        if (_unitComponent.Health <= 0) {
-            _unitComponent.Death();
-        }
-        else {
-            _unitComponent.TakeDamage();
-        }
+    private void OnCollisionEnter(Collision col) {
+        var unitComponent = col.gameObject.GetComponent<UnitComponent>();
+        if (unitComponent == null) return;
+        if (_ignoredTypes.Contains(unitComponent.UnitType)) return;
+        var damageDealerComponent = unitComponent.GetComponent<DamageDealerComponent>();
+        if (damageDealerComponent == null) return;
+        TakeDamage(damageDealerComponent);
     }
 
     protected override void Init() {
-        _unitComponent = GetComponent<UnitComponent>();
+        _healthComponent = GetComponent<HealthComponent>();
     }
 }

@@ -37,12 +37,10 @@ public class UIController : SceneSingleton<UIController> {
         _toMenu.onClick.AddListener(BackToMenu);
         _killCounter = 0;
         _player = FindObjectOfType<PlayerComponent>();
-        _healthCounter = (int)_player.Health;
         UpdateHP();
     }
 
     public void UpdateHP() {
-        _healthCounter = (int)_player.Health;
         var currentHealthCount = _healthList.Count;
 
         if (_healthCounter > currentHealthCount) {

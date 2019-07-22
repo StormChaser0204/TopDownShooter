@@ -9,8 +9,8 @@ public class CameraControler : MonoBehaviour {
     private Transform _playerTransform;
 
     public void Start() {
-        heightFix = new Vector3(0, 3f, 0);
-        _playerTransform = FindObjectOfType<PlayerComponent>().RunnerComponent.Trans;
+        heightFix = new Vector3(0, 100f, 0);
+        _playerTransform = FindObjectOfType<PlayerComponent>().GetComponent<RunnerComponent>().transform;
     }
 
     public void Update() {
